@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesan Untukmu ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --pink-soft: #ffe5ec;
+            --pink-dark: #ff4d6d;
+            --white: #ffffff;
+        }
+
+        body {
+            margin: 0; padding: 0;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; background: var(--pink-soft);
+            font-family: 'Poppins', sans-serif; overflow: hidden;
+        }
+
+        /* Floating Music Button */
+        .music-control {
+            position: fixed; top: 20px; right: 20px;
+            z-index: 100; background: var(--white);
+            border-radius: 50%; width: 45px; height: 45px;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border: 2px solid var(--pink-dark);
+        }
+
+        .card {
+            background: var(--white);
+            padding: 35px; border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            text-align: center; width: 85%; max-width: 350px;
+            min-height: 280px; display: flex; flex-direction: column;
+            justify-content: center; z-index: 10;
+            transition: all 0.5s ease;
+        }
+
+        h2 { color: var(--pink-dark); margin-bottom: 10px; font-size: 1.5rem; }
+        p { color: #444; font-size: 1rem; line-height: 1.5; }
+
+        .btn {
+            background: var(--pink-dark); color: white; border: none;
+            padding: 14px 20px; border-radius: 12px;
+            font-size: 0.9rem; font-weight: 600; cursor: pointer;
+            margin-top: 20px; transition: 0.3s; text-decoration: none;
+        }
+
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3); }
+        .btn-wa { background: #25d366; }
+
+        /* Hati Melayang */
+        .heart-bg {
+            position: absolute; color: rgba(255, 77, 109, 0.2);
+            font-size: 20px; animation: float 6s infinite linear;
+            bottom: -50px; z-index: 1;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="music-control" onclick="toggleMusic()" id="musicBtn">
+        <span id="musicIcon">🎵</span>
+    </div>
+
+    <div class="card" id="main-card">
+        <div id="content">
+            <h2 id="title">Halo Kamu! 😊</h2>
+            <p id="desc">Aku punya sesuatu buat kamu, diklik ya setiap slidenya...</p>
+            <button class="btn" onclick="nextSlide()">Mulai Sekarang ✨</button>
+        </div>
+    </div>
+
+    <audio id="lagu" loop>
+        <source src="musik.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let currentSlide = 0;
+        const lagu = document.getElementById('lagu');
+        const musicIcon = document.getElementById('musicIcon');
+        let isPlaying = false;
+
+        const slides = [
+            {
+                title: "Slide 1: Penasaran...",
+                desc: "Tau gak kenapa tiap liat kamu aku ngerasa jadi kaya kamera?",
+                btnText: "Kenapa emangnya? 🤔"
+            },
+            {
+                title: "Slide 2: Soalnya...",
+                desc: "Soalnya tiap liat kamu, mata aku langsung auto-focus ke kamu aja, yang lain jadi nge-blur. 📸",
+                btnText: "Hahaha, terus? 🤭"
+            },
+            {
+                title: "Slide 3: Belum Selesai!",
+                desc: "Kamu itu ibarat Google ya? Soalnya semua yang aku cari selama ini, ada di kamu. ❤️",
+                btnText: "Bisa banget! Lanjut.."
+            },
+            {
+                title: "Slide 4: Cita-cita",
+                desc: "Dulu cita-citaku jadi astronot, tapi sekarang berubah. Aku cuma mau jadi penjelajah di hatimu. 🚀",
+                btnText: "Terakhir apa? 👉"
+            },
+            {
+                title: "Slide 5: My Message",
+                desc: "Makasih ya udah mau dengerin gombalan receh ini. Kalau kamu senyum baca ini, kabarin aku di WA ya!",
+                isLast: true
+            }
+        ];
+
+        function toggleMusic() {
+            if (isPlaying) {
+                lagu.pause();
+                musicIcon.innerText = "🔇";
+            } else {
+                lagu.play();
+                musicIcon.innerText = "🎵";
+            }
+            isPlaying = !isPlaying;
+        }
+
+        function nextSlide() {
+            // Putar musik otomatis saat klik pertama jika belum nyala
+            if (!isPlaying) toggleMusic();
+
+            if (currentSlide < slides.length) {
+                const data = slides[currentSlide];
+                const content = document.getElementById('content');
+                
+                // Efek transisi sederhana
+                content.style.opacity = 0;
+                
+                setTimeout(() => {
+                    if (data.isLast) {
+                        content.innerHTML = `
+                            <h2>${data.title}</h2>
+                            <p>${data.desc}</p>
+                            <a href="https://wa.me/6289509844510?text=Gombalannya%20bisa%20aja!%20Makasih%20ya%20❤️" class="btn btn-wa">Balas di WhatsApp 💌</a>
+                        `;
+                    } else {
+                        content.innerHTML = `
+                            <h2>${data.title}</h2>
+                            <p>${data.desc}</p>
+                            <button class="btn" onclick="nextSlide()">${data.btnText}</button>
+                        `;
+                    }
+                    content.style.opacity = 1;
+                }, 300);
+
+                currentSlide++;
+            }
+        }
+
+        // Animasi Hati
+        setInterval(() => {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'heart-bg';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heart.style.fontSize = (Math.random() * 10 + 15) + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 6000);
+        }, 400);
+    </script>
+</body>
+</html>
