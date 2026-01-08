@@ -161,7 +161,7 @@ const questions = [
 shuffle(questions);
 
 // ===== GAME LOGIC =====
-let score=0,timeLeft=60,index=0,gameOver=false;
+let score=0,timeLeft=10,index=0,gameOver=false;
 
 const scoreEl=document.getElementById("score");
 const timeEl=document.getElementById("time");
@@ -236,7 +236,7 @@ function endGame(){
 // share WA
 shareBtn.onclick=()=>{
     window.open(
-        "https://wa.me/+6281266737751?text="+encodeURIComponent(
+        "https://wa.me/6281266737751?text="+encodeURIComponent(
         `🧠 Game Tebak Cepat\n${resultEl.innerText}\n${giftEl.innerText}`
         ),
         "_blank"
