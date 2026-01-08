@@ -161,7 +161,7 @@ const questions = [
 shuffle(questions);
 
 // ===== GAME LOGIC =====
-let score=0,timeLeft=10,index=0,gameOver=false;
+let score=0,timeLeft=60,index=0,gameOver=false;
 
 const scoreEl=document.getElementById("score");
 const timeEl=document.getElementById("time");
@@ -209,7 +209,7 @@ function endGame(){
 
     let rank="😢 Belum Ranking";
     let hadiah=0;
-    let ucapan=jangan sedih ya";
+    let ucapan="";
 
     if(score>=100){
         rank="🥇 Ranking 1";
