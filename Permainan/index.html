@@ -39,6 +39,13 @@ button{
 }
 .true{background:#2ecc71;color:white;}
 .false{background:#e74c3c;color:white;}
+
+#musicBtn{
+    background:#3498db;
+    color:white;
+    margin-top:10px;
+}
+
 #result{
     font-size:22px;
     margin-top:20px;
@@ -64,6 +71,8 @@ button{
     <h1>🧠 Game Tebak Cepat</h1>
     <p>Jawab BENAR atau SALAH secepat mungkin!</p>
 
+    <button id="musicBtn">🎵 Play Musik</button>
+
     <div class="info">
         <div>Skor: <span id="score">0</span></div>
         <div>Waktu: <span id="time">60</span>s</div>
@@ -88,6 +97,23 @@ button{
 </audio>
 
 <script>
+// ===== MUSIC CONTROL =====
+const bgm = document.getElementById("bgm");
+const musicBtn = document.getElementById("musicBtn");
+let musicPlaying = false;
+
+musicBtn.onclick = () => {
+    if(!musicPlaying){
+        bgm.play();
+        musicBtn.innerText = "⏸ Pause Musik";
+        musicPlaying = true;
+    }else{
+        bgm.pause();
+        musicBtn.innerText = "🎵 Play Musik";
+        musicPlaying = false;
+    }
+};
+
 // ===== SHUFFLE FUNCTION =====
 function shuffle(array){
     for(let i=array.length-1;i>0;i--){
@@ -103,14 +129,12 @@ const questions = [
 {q:"Ayam bisa terbang tinggi",a:false},{q:"Indonesia negara kepulauan",a:true},
 {q:"Segitiga punya 3 sisi",a:true},{q:"1 jam = 60 menit",a:true},
 {q:"Api itu dingin",a:false},{q:"Manusia punya dua mata",a:true},
-
 {q:"10 × 10 = 100",a:true},{q:"Indonesia di Eropa",a:false},
 {q:"Air membeku di 0°C",a:true},{q:"Bumi mengelilingi matahari",a:true},
 {q:"Pelangi punya 7 warna",a:true},{q:"Ular punya kaki",a:false},
 {q:"Besi bisa berkarat",a:true},{q:"Semua burung bisa terbang",a:false},
 {q:"Planet terdekat matahari Merkurius",a:true},
 {q:"Air bisa jadi uap",a:true},
-
 {q:"Kecepatan cahaya > suara",a:true},
 {q:"DNA ada di inti sel",a:true},
 {q:"Manusia punya 206 tulang",a:true},
@@ -121,7 +145,6 @@ const questions = [
 {q:"Es tenggelam di air",a:false},
 {q:"Otak pakai energi terbanyak",a:true},
 {q:"Gunung berapi hanya di darat",a:false},
-
 {q:"Waktu bersifat relatif",a:true},
 {q:"Lubang hitam gravitasinya ekstrem",a:true},
 {q:"Cahaya dibelokkan gravitasi",a:true},
@@ -134,7 +157,7 @@ const questions = [
 {q:"Lubang hitam bisa menguap",a:true}
 ];
 
-// acak soal setiap main
+// acak soal
 shuffle(questions);
 
 // ===== GAME LOGIC =====
@@ -147,13 +170,9 @@ const countEl=document.getElementById("count");
 const resultEl=document.getElementById("result");
 const giftEl=document.getElementById("gift");
 const shareBtn=document.getElementById("shareBtn");
-const bgm=document.getElementById("bgm");
 
 let correct=questions[0].a;
 questionEl.innerText=questions[0].q;
-
-// autoplay fix
-document.body.addEventListener("click",()=>bgm.play(),{once:true});
 
 // timer
 const timer=setInterval(()=>{
@@ -186,34 +205,35 @@ function answer(choice){
 function endGame(){
     gameOver=true;
     bgm.pause();
+    musicBtn.innerText="🎵 Play Musik";
 
     let rank="😢 Belum Ranking";
     let hadiah=0;
-    let ucapan="ya kurang beruntung";
+    let ucapan="";
 
     if(score>=100){
         rank="🥇 Ranking 1";
         hadiah=100;
-        ucapan="🎉 Selamat! Kamu berhasil memenangkan game ini dengan sangat luar biasa!";
+        ucapan="🎉 Selamat! Kamu berhasil memenangkan game ini!";
     }else if(score>=75){
         rank="🥈 Ranking 2";
         hadiah=75;
-        ucapan="🎊 Selamat! Kamu berhasil memenangkan game ini, sedikit lagi ke ranking 1!";
+        ucapan="🎊 Selamat! Kamu berhasil memenangkan game ini!";
     }else if(score>=50){
         rank="🥉 Ranking 3";
         hadiah=50;
-        ucapan="👏 Selamat! Kamu berhasil memenangkan game ini, pertahankan!";
+        ucapan="👏 Selamat! Kamu berhasil memenangkan game ini!";
     }else{
-        ucapan="💪 Jangan menyerah! Coba lagi untuk memenangkan game ini.";
+        ucapan="💪 Jangan menyerah! Coba lagi ya!";
     }
 
-    resultEl.innerHTML=`${rank}<br>Skor Akhir: ${score}<br>Hadiah: ${hadiah} poin`;
+    resultEl.innerHTML=`${rank}<br>Skor: ${score}<br>Hadiah: ${hadiah} poin`;
     giftEl.innerText=ucapan;
     giftEl.style.display="block";
     shareBtn.style.display="inline-block";
 }
 
-// share WhatsApp
+// share WA
 shareBtn.onclick=()=>{
     window.open(
         "https://wa.me/?text="+encodeURIComponent(
